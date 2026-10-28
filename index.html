@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Smile That Fits</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #243e3c; background: #f6f3e9; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1000px; margin: auto; padding: 36px 24px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .18em; font-size: 12px; }
+    h1 { font-family: Georgia, serif; font-weight: normal; font-size: clamp(36px, 7vw, 66px); margin: 14px 0; }
+    .intro { max-width: 580px; line-height: 1.6; }
+    .scene { background: #d8e3d8; border: 1px solid #b8cabc; border-radius: 22px; margin: 26px 0; overflow: hidden; }
+    svg { width: 100%; display: block; }
+    .crowd { fill: #92ab97; stroke: #46675c; stroke-width: 2; }
+    .eye, .mouth { fill: none; stroke: #35554b; stroke-width: 3; stroke-linecap: round; }
+    #you { fill: #de7d57; stroke: #784c3d; stroke-width: 2; }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    button, select { font: inherit; padding: 10px 17px; border-radius: 7px; border: 1px solid #647d70; }
+    button { background: #294f45; color: white; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: default; }
+    select { background: white; }
+    #status { min-height: 25px; line-height: 1.5; }
+    .panel { display: grid; grid-template-columns: 224px 1fr; gap: 26px; margin: 24px 0; align-items: center; }
+    #camera { width: 224px; min-height: 150px; background: #e4e6de; border-radius: 12px; overflow: hidden; display: grid; place-items: center; color: #576b60; }
+    canvas { display: block; max-width: 100%; }
+    .meter { display: grid; grid-template-columns: 75px 1fr 48px; align-items: center; gap: 10px; margin: 12px 0; }
+    progress { width: 100%; accent-color: #477c65; }
+    .note { font-size: 13px; line-height: 1.6; color: #52665c; }
+    #caption { font-family: Georgia, serif; font-size: 23px; min-height: 32px; }
+    details { margin-top: 26px; line-height: 1.6; }
+    @media(max-width: 560px) { .panel { grid-template-columns: 1fr; } main { padding: 25px 16px; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">An experiment in belonging · Lab 5</p>
+  <h1>The Smile That Fits</h1>
+  <p class="intro">Everyone here is smiling. Smile, and your creature begins to blend into the crowd. Relax your expression, and its own color returns. How much of yourself would you change to belong?</p>
+  <div class="scene">
+    <svg viewBox="0 0 900 340" role="img" aria-label="A crowd of green smiling creatures surrounds your orange creature. Your creature changes color with the model prediction.">
+      <defs>
+        <g id="creature">
+          <path d="M-37 30 Q-50 0-34-27 L-28-47 -10-34 Q10-40 27-31 L39-45 39-17 Q55 10 35 31Z"/>
+          <path class="eye" d="M-22-9h1 M19-9h1"/>
+          <path class="mouth" d="M-16 8 Q0 28 17 8"/>
+        </g>
+      </defs>
+      <path d="M0 280 Q220 240 450 280 T900 275 V340H0Z" fill="#c3d2c3"/>
+      <g class="crowd">
+        <use href="#creature" x="100" y="110"/><use href="#creature" x="240" y="105"/>
+        <use href="#creature" x="380" y="100"/><use href="#creature" x="520" y="105"/>
+        <use href="#creature" x="660" y="100"/><use href="#creature" x="800" y="110"/>
+        <use href="#creature" x="80" y="245"/><use href="#creature" x="220" y="250"/>
+        <use href="#creature" x="680" y="250"/><use href="#creature" x="820" y="245"/>
+      </g>
+      <g id="you" transform="translate(450 235) scale(1.25)">
+        <path d="M-37 30 Q-50 0-34-27 L-28-47 -10-34 Q10-40 27-31 L39-45 39-17 Q55 10 35 31Z"/>
+        <path class="eye" d="M-22-9h1 M19-9h1"/>
+        <path id="your-mouth" class="mouth" d="M-16 12 Q0 12 17 12"/>
+      </g>
+      <text x="450" y="315" text-anchor="middle" fill="#35554b" font-family="system-ui" font-size="13" letter-spacing="3">YOU</text>
+    </svg>
+  </div>
+  <p id="caption">Your own color, for now.</p>
+  <div class="controls">
+    <button id="start">Start camera</button>
+    <button id="stop" disabled>Stop camera</button>
+    <label>Smile class:
+      <select id="smile-class"><option value="Class 1">Class 1</option><option value="Class 2">Class 2</option></select>
+    </label>
+  </div>
+  <p id="status" role="status">Camera is off. Start when you are ready.</p>
+  <div class="panel">
+    <div id="camera">Camera preview</div>
+    <div>
+      <div class="meter"><span>Smile</span><progress id="smile-bar" max="1" value="0"></progress><output id="smile-value">—</output></div>
+      <div class="meter"><span>Neutral</span><progress id="neutral-bar" max="1" value="0"></progress><output id="neutral-value">—</output></div>
+      <p class="note">These are model predictions about appearance, not measurements of happiness. Your camera frames are processed in this browser; this page does not upload or save them. Model files and libraries load from the internet.</p>
+    </div>
+  </div>
+  <details>
+    <summary>About this experiment</summary>
+    <p>This artwork borrows the strategy of camouflage: blending into surrounding colors. It uses that strategy as a metaphor for the pressure to appear happy and fit in. It does not claim that camouflage in animals has the same meaning as human social behavior.</p>
+    <p>The loop: your expression → camera → image classifier → creature changes color → you see the response → you decide whether to change your expression.</p>
+  </details>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
+<script>
+// Your exported model. Class 1 = Smile; Class 2 = Neutral.
+const MODEL_URL = 'https://teachablemachine.withgoogle.com/models/rYl40uxzD/';
+const $ = id => document.getElementById(id);
+let model, webcam, running = false, starting = false, frame, blend = 0;
+
+function paint(amount) {
+  const orange = [222, 125, 87], green = [146, 171, 151];
+  const color = orange.map((v, i) => Math.round(v + (green[i] - v) * amount));
+  $('you').style.fill = `rgb(${color.join(',')})`;
+  $('you').style.stroke = amount > .65 ? '#46675c' : '#784c3d';
+  $('your-mouth').setAttribute('d', `M-16 12 Q0 ${12 + amount * 18} 17 12`);
+  $('caption').textContent = amount > .75 ? 'You fit right in. Can you still see yourself?'
+    : amount < .25 ? 'Your own color, for now.' : 'Somewhere between belonging and becoming.';
+}
+
+function stopCamera(message = 'Camera stopped. Your own color returns.') {
+  running = false;
+  cancelAnimationFrame(frame);
+  if (webcam) { webcam.stop(); webcam = null; }
+  $('camera').textContent = 'Camera preview';
+  $('start').disabled = starting;
+  $('stop').disabled = true;
+  $('status').textContent = message;
+  blend = 0;
+  paint(0);
+  for (const name of ['smile', 'neutral']) {
+    $(name + '-bar').value = 0;
+    $(name + '-value').textContent = '—';
+  }
+}
+
+async function loop() {
+  if (!running || !webcam) return;
+  try {
+    webcam.update();
+    const predictions = await model.predict(webcam.canvas);
+    if (!running) return;
+    const smile = predictions.find(p => p.className === $('smile-class').value);
+    const neutral = predictions.find(p => p.className !== $('smile-class').value);
+    if (!smile || !neutral) throw new Error('Model classes do not match. Check the exported model.');
+    for (const [name, prediction] of [['smile', smile], ['neutral', neutral]]) {
+      $(name + '-bar').value = prediction.probability;
+      $(name + '-value').textContent = Math.round(prediction.probability * 100) + '%';
+    }
+    // Smooth the response so a brief uncertain prediction does not cause flickering.
+    blend += (smile.probability - blend) * .06;
+    paint(blend);
+    frame = requestAnimationFrame(loop);
+  } catch (error) {
+    stopCamera('Prediction stopped: ' + error.message);
+  }
+}
+
+$('start').addEventListener('click', async () => {
+  if (starting || running) return;
+  starting = true;
+  $('start').disabled = true;
+  $('status').textContent = 'Loading model…';
+  try {
+    if (!window.tmImage) throw new Error('Libraries did not load. Check your internet connection and reload.');
+    if (!window.isSecureContext) throw new Error('Open this page on localhost or HTTPS for camera access.');
+    if (!model) model = await tmImage.load(MODEL_URL + 'model.json', MODEL_URL + 'metadata.json');
+    $('status').textContent = 'Allow camera access in your browser…';
+    webcam = new tmImage.Webcam(224, 224, true);
+    await webcam.setup();
+    await webcam.play();
+    $('camera').replaceChildren(webcam.canvas);
+    running = true;
+    $('stop').disabled = false;
+    $('status').textContent = 'Try smiling, then relax your expression. Watch your creature’s color.';
+    loop();
+  } catch (error) {
+    stopCamera(error.name === 'NotAllowedError' ? 'Camera permission was denied. Allow it in your browser, then try again.' : error.message);
+  } finally {
+    starting = false;
+    $('start').disabled = running;
+  }
+});
+$('stop').addEventListener('click', () => stopCamera());
+$('smile-class').addEventListener('change', () => { blend = 0; paint(0); });
+window.addEventListener('pagehide', () => { if (webcam) webcam.stop(); });
+</script>
+</body>
+</html>
