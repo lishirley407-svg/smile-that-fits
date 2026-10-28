@@ -2,6 +2,12 @@
 
 An interactive Lab 5 artwork about the pressure to appear happy to belong.
 
+## Open the website
+
+https://lishirley407-svg.github.io/smile-that-fits/
+
+Click **Start camera**, allow camera access, then try smiling and relaxing your expression. No download or local server is needed.
+
 ## Run locally
 
 1. Open this folder in VS Code.
@@ -30,9 +36,9 @@ The work borrows camouflage, blending into surrounding colors, as an artistic an
 
 Expression → camera → trained image classifier → creature changes color → viewer observes → viewer changes or maintains expression.
 
-## Deployment later
+## Deployment
 
-Push this folder to a GitHub repository. For the assignment's Dokploy deployment, use a static application whose root contains `index.html`, and enable HTTPS for camera access. This local starter has not been deployed.
+GitHub Pages publishes the root directory of the `main` branch over HTTPS. The class assignment's separate Dokploy deployment remains pending; use a static application whose root contains `index.html`, and enable HTTPS for camera access.
 
 ## Libraries
 
